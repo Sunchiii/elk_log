@@ -1,0 +1,22 @@
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+output.logstash:
+  hosts: ["logstash:5044"]
+
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /var/log/app.log
+  tags: ["log-app"]
+  scan_frequency: 5s
+
+# processors to filter and enhance data before sending it to the configured output
+processors:
+  - add_fields:
+      target: ''
+      fields:
+        service_name: TEST
